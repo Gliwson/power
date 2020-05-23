@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="Gliwson" id="1581543361396-3">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="id_power_station" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="task_type" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="power_loss" type="DECIMAL(21, 2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="start_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="end_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20190624005436-2-data" author="Gliwson">
+        <loadData
+                file="db/changelog/data/tasks.csv"
+                separator=";"
+                tableName="tasks">
+            <column name="id" type="numeric"/>
+            <column name="id_power_station" type="numeric"/>
+            <column name="task_type" type="string"/>
+            <column name="power_loss" type="numeric"/>
+            <column name="start_date" type="timestamp"/>
+            <column name="end_date" type="timestamp"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

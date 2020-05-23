@@ -1,0 +1,5 @@
+id;id_power_station;task_type;power_loss;start_date;end_date
+1;1;AWARIA;300;2017-07-23;2017-07-23
+2;1;REMONT;10;2017-07-20;2017-07-23
+3;2;REMONT;10;2017-07-20;2017-07-23
+4;2;AWARIA;600;2017-07-23;2017-07-23

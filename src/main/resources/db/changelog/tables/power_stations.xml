@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="Gliwson" id="1581908445642-4">
+        <createTable tableName="power_stations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="power" type="DECIMAL(21, 2)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20190624005436-2-data" author="Gliwson">
+        <loadData
+                file="db/changelog/data/power_stations.csv"
+                separator=";"
+                tableName="power_stations">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="power" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

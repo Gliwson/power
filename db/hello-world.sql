@@ -1,4 +1,0 @@
-
-CREATE DATABASE `hello-world`;
-
-
