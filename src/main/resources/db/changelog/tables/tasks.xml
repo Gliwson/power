@@ -27,18 +27,4 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20190624005436-2-data" author="Gliwson">
-        <loadData
-                file="db/changelog/data/tasks.csv"
-                separator=";"
-                tableName="tasks">
-            <column name="id" type="numeric"/>
-            <column name="id_power_station" type="numeric"/>
-            <column name="task_type" type="string"/>
-            <column name="power_loss" type="numeric"/>
-            <column name="start_date" type="timestamp"/>
-            <column name="end_date" type="timestamp"/>
-        </loadData>
-    </changeSet>
-
 </databaseChangeLog>

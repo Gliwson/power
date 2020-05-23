@@ -18,15 +18,4 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20190624005436-2-data" author="Gliwson">
-        <loadData
-                file="db/changelog/data/power_stations.csv"
-                separator=";"
-                tableName="power_stations">
-            <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
-            <column name="power" type="numeric"/>
-        </loadData>
-    </changeSet>
-
 </databaseChangeLog>

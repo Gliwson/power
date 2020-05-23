@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20190624005436-2-data" author="Gliwson">
+        <loadData
+                file="db/changelog/data/power_stations.csv"
+                separator=";"
+                tableName="power_stations">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="power" type="numeric"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="20190624005420-2-data" author="Gliwson">
+        <loadData
+                file="db/changelog/data/tasks.csv"
+                separator=";"
+                tableName="tasks">
+            <column name="id" type="numeric"/>
+            <column name="id_power_station" type="numeric"/>
+            <column name="task_type" type="string"/>
+            <column name="power_loss" type="numeric"/>
+            <column name="start_date" type="timestamp"/>
+            <column name="end_date" type="timestamp"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

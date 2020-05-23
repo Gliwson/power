@@ -5,6 +5,7 @@
 
     <include file="tables/power_stations.xml" relativeToChangelogFile="true"/>
     <include file="tables/tasks.xml" relativeToChangelogFile="true"/>
+    <include file="tables/data_fake.xml" relativeToChangelogFile="true"/>
     <include file="tables/foreignKeys.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
