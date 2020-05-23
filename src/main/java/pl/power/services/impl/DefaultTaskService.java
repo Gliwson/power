@@ -29,7 +29,7 @@ public class DefaultTaskService implements TaskService {
     @Override
     @Transactional
     public void deleteTask(Long id) {
-        taskRepository.findById(id).ifPresent(taskRepository::delete);
+        taskRepository.deleteById(id);
     }
 
     @Override

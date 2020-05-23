@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface PowerStationService {
 
-    Long addPowerStation(PowerStationDTO powerStationDTO);
+    Long add(PowerStationDTO powerStationDTO);
 
     List<PowerStationDTO> findAll();
 
     PowerStationDTO findById(Long id);
 
-    PowerStationDTO updatePowerStation(Long id, PowerStationDTO powerStationDTO);
+    PowerStationDTO update(Long id, PowerStationDTO powerStationDTO);
 
-    void deletePowerStationById(Long id);
+    void delete(Long id);
 }

@@ -7,7 +7,4 @@ import pl.power.domain.entities.PowerStation;
 import java.util.List;
 
 public interface PowerStationRepository extends JpaRepository<PowerStation, Long> {
-
-    @Query(value = "select ps from PowerStation ps left join fetch ps.tasks")
-    List<PowerStation> findAll();
 }

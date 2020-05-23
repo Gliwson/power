@@ -19,7 +19,7 @@ public class PowerStation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 1000)
     private String name;
 
     @Column(name = "power")

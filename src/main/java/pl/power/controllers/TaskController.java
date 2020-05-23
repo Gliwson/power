@@ -1,5 +1,6 @@
 package pl.power.controllers;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDTO> findAllTasks() {
-        return taskService.findAllTasks();
+    public ResponseEntity<List<TaskDTO>> findAllTasks() {
+        return ResponseEntity.ok(taskService.findAllTasks());
     }
 
     @GetMapping("/{id}")
@@ -35,7 +36,6 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }

@@ -3,9 +3,9 @@ package pl.power.dtos;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Data
 public class PowerStationDTO {
@@ -16,9 +16,7 @@ public class PowerStationDTO {
     @Size(max = 1000)
     private String name;
 
-    @NotBlank
+    @NotNull
     private BigDecimal power;
-
-    private Set<TaskDTO> tasks;
 
 }

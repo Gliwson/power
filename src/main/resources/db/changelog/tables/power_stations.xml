@@ -10,7 +10,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="VARCHAR(1000)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="power" type="DECIMAL(21, 2)">
                 <constraints nullable="true"/>
