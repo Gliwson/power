@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 import pl.power.domain.entities.PowerStation;
 import pl.power.domain.entities.Task;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query(value = "select t from Task t left join fetch t.powerStation")
-    List<Task> findAll();
+    @Query("select t from Task t left join fetch t.powerStation")
+    Collection<Task> findAllOneSelect();
 }

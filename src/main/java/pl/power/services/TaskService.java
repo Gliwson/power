@@ -13,4 +13,6 @@ public interface TaskService {
     List<TaskDTO> findAllTasks();
 
     TaskDTO findById(Long id);
+
+    Long countEventsByIdPowerStation(Long id, String taskType);
 }

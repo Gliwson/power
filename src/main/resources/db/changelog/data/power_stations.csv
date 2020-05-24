@@ -1,6 +1,9 @@
 id;name;power
-1;LUBLIN;100
-2;WARSZAWA;22
-3;GDAŃSK;33
-4;GDYNIA;44
-5;WROCŁAW;44
+1;Pątnów 1 B1;474
+2;Pątnów 1 B2;200
+3;Pątnów 1 B3;200
+4;Pątnów 1 B4;200
+5;Pątnów 2 B1;474
+6;Pątnów 2 B2;300
+7;Pątnów 2 B3;500
+8;Pątnów 2 B4;600

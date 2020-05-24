@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import pl.power.domain.entities.PowerStation;
+import pl.power.domain.entities.enums.TaskType;
 import pl.power.domain.repositories.PowerStationRepository;
 import pl.power.dtos.PowerStationDTO;
 import pl.power.services.PowerStationService;
@@ -12,7 +13,10 @@ import pl.power.services.errors.IdIsNullException;
 import pl.power.services.errors.PowerStationsNotFoundException;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +37,7 @@ public class DefaultPowerStationService implements PowerStationService {
 
     @Override
     public List<PowerStationDTO> findAll() {
-        return powerStationRepository.findAll()
+        return powerStationRepository.findAllOneSelect()
                 .stream()
                 .map(powerStation -> mapper.map(powerStation, PowerStationDTO.class))
                 .collect(Collectors.toList());
@@ -71,5 +75,26 @@ public class DefaultPowerStationService implements PowerStationService {
             throw new IdIsNullException();
         }
         powerStationRepository.deleteById(id);
+    }
+
+    @Override
+    public Long countEventsByIdPowerStation(Long id, String taskType) {
+        if (id == null) {
+            throw new IdIsNullException();
+        }
+        TaskType filter = TaskType.mapStringToTaskType(taskType);
+        return powerStationRepository.findAllOneSelect().stream()
+                .filter(powerStation -> powerStation.getId().equals(id))
+                .map(PowerStation::getTasks)
+                .flatMap(Collection::stream)
+                .filter(task -> task.getTaskType() == filter)
+                .count();
+
+    }
+
+    @Override
+    public Map<Integer, BigDecimal> getDateAndPower(String date) {
+
+        return null;
     }
 }

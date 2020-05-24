@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = {"tasks"})
-public class PowerStation {
+public class PowerStation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

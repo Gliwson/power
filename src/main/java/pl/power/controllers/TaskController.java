@@ -1,7 +1,5 @@
 package pl.power.controllers;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.power.dtos.TaskDTO;
@@ -38,5 +36,10 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
+    }
+
+    @GetMapping("/{id}/{taskType}")
+    public Long getNumberOfEvents(@PathVariable Long id, @PathVariable String taskType) {
+        return taskService.countEventsByIdPowerStation(id, taskType);
     }
 }

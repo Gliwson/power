@@ -6,7 +6,9 @@ import pl.power.dtos.PowerStationDTO;
 import pl.power.services.PowerStationService;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/powerstations")
@@ -45,5 +47,14 @@ public class PowerStationController {
         return powerStationService.update(id, powerStationDTO);
     }
 
+    @GetMapping("/{id}/{taskType}")
+    public Long getNumberOfEvents(@PathVariable Long id, @PathVariable String taskType) {
+        return powerStationService.countEventsByIdPowerStation(id, taskType);
+    }
+
+    @GetMapping("/{date}")
+    public Map<Integer, BigDecimal> getDateAndPower(@PathVariable String date) {
+        return powerStationService.getDateAndPower(date);
+    }
 
 }
