@@ -7,6 +7,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,4 +30,12 @@ public class PowerStation implements Serializable {
 
     @OneToMany(mappedBy = "powerStation", cascade = CascadeType.ALL)
     private Set<Task> tasks;
+
+    public void add(Task task) {
+        if (tasks == null) {
+            tasks = new HashSet<>();
+        }
+        tasks.add(task);
+        task.setPowerStation(this);
+    }
 }

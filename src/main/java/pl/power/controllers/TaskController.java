@@ -1,10 +1,14 @@
 package pl.power.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.power.dtos.CreateTaskDTO;
+import pl.power.dtos.PowerStationDTO;
 import pl.power.dtos.TaskDTO;
 import pl.power.services.TaskService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,24 +22,30 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> findAllTasks() {
-        return ResponseEntity.ok(taskService.findAllTasks());
+    public List<TaskDTO> getTasks() {
+        return taskService.findAll();
     }
 
     @GetMapping("/{id}")
-    public TaskDTO findById(@PathVariable Long id) {
+    public TaskDTO getTaskById(@PathVariable Long id) {
         return taskService.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<TaskDTO> addTask(@RequestBody TaskDTO taskDTO) {
-        TaskDTO taskDTO1 = taskService.addTask(taskDTO);
-        return ResponseEntity.ok(taskDTO1);
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Long createTask(@Valid @RequestBody CreateTaskDTO createTaskDTO) {
+        return taskService.add(createTaskDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteTaskById(@PathVariable Long id) {
+        taskService.delete(id);
+    }
+
+    @PutMapping("/")
+    public TaskDTO updateTask(@Valid @RequestBody CreateTaskDTO createTaskDTO) {
+        return taskService.update(createTaskDTO);
     }
 
     @GetMapping("/{id}/{taskType}")

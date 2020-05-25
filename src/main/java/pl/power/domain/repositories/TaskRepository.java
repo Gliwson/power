@@ -13,4 +13,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("select t from Task t left join fetch t.powerStation")
     Collection<Task> findAllOneSelect();
+
+    @Query("select MAX(t.id) from Task t")
+    Long findLastSaved();
 }

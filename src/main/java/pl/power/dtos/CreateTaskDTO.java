@@ -1,23 +1,20 @@
 package pl.power.dtos;
 
 import lombok.Data;
-import pl.power.domain.entities.PowerStation;
 import pl.power.domain.entities.enums.TaskType;
 import pl.power.validation.constraints.StartDateAndEndDate;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Data
-public class TaskDTO {
+@StartDateAndEndDate
+public class CreateTaskDTO {
 
+    @NotNull
     private Long id;
-
-    @NotBlank
-    private String namePowerStation;
 
     @NotNull
     private TaskType taskType;

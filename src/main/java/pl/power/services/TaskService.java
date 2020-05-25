@@ -1,18 +1,21 @@
 package pl.power.services;
 
+import pl.power.dtos.CreateTaskDTO;
 import pl.power.dtos.TaskDTO;
 
 import java.util.List;
 
 public interface TaskService {
 
-    TaskDTO addTask(TaskDTO taskDTO);
+    Long add(CreateTaskDTO createTaskDTO);
 
-    void deleteTask(Long id);
+    void delete(Long id);
 
-    List<TaskDTO> findAllTasks();
+    List<TaskDTO> findAll();
 
     TaskDTO findById(Long id);
 
     Long countEventsByIdPowerStation(Long id, String taskType);
+
+    TaskDTO update(CreateTaskDTO createTaskDTO);
 }

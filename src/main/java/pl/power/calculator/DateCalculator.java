@@ -19,10 +19,6 @@ public class DateCalculator {
         this.dateTime = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
     }
 
-    public boolean checkYear(LocalDateTime start, LocalDateTime end) {
-        return dateTime.getYear() == start.getYear() || dateTime.getYear() == end.getYear();
-    }
-
     public Converter subtractPowerLossFromPower(PowerStation powerStation) {
         Converter converter = new Converter();
         converter.setPower(powerStation.getPower().multiply(new BigDecimal(24)));

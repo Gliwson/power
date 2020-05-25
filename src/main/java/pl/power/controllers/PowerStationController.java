@@ -43,7 +43,7 @@ public class PowerStationController {
     }
 
     @PutMapping("/{id}")
-    public PowerStationDTO updateMovie(@PathVariable Long id, @Valid @RequestBody PowerStationDTO powerStationDTO) {
+    public PowerStationDTO updatePowerStation(@PathVariable Long id, @Valid @RequestBody PowerStationDTO powerStationDTO) {
         return powerStationService.update(id, powerStationDTO);
     }
 
