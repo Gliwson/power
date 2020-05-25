@@ -1,10 +1,15 @@
 package pl.power.services.impl;
 
+import ch.qos.logback.classic.pattern.DateConverter;
+import javafx.scene.effect.FloatMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import pl.power.calculator.DateCalculator;
+import pl.power.domain.Converter;
 import pl.power.domain.entities.PowerStation;
+import pl.power.domain.entities.Task;
 import pl.power.domain.entities.enums.TaskType;
 import pl.power.domain.repositories.PowerStationRepository;
 import pl.power.dtos.PowerStationDTO;
@@ -14,10 +19,9 @@ import pl.power.services.errors.PowerStationsNotFoundException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -37,7 +41,7 @@ public class DefaultPowerStationService implements PowerStationService {
 
     @Override
     public List<PowerStationDTO> findAll() {
-        return powerStationRepository.findAllOneSelect()
+        return powerStationRepository.findAll()
                 .stream()
                 .map(powerStation -> mapper.map(powerStation, PowerStationDTO.class))
                 .collect(Collectors.toList());
@@ -89,12 +93,25 @@ public class DefaultPowerStationService implements PowerStationService {
                 .flatMap(Collection::stream)
                 .filter(task -> task.getTaskType() == filter)
                 .count();
-
     }
 
     @Override
-    public Map<Integer, BigDecimal> getDateAndPower(String date) {
-
-        return null;
+    public Map<Long, BigDecimal> getDateAndPower(String date) {
+        DateCalculator dateCalculator = new DateCalculator(date);
+        Map<Long, BigDecimal> collect = powerStationRepository.findAllOneSelect().stream()
+                .peek(powerStation -> {
+                    Set<Task> newTask = new HashSet<>();
+                    Set<Task> tasks = powerStation.getTasks();
+                    for (Task task : tasks) {
+                        if (dateCalculator.checkYear(task.getStartDate().toLocalDateTime(), task.getEndDate().toLocalDateTime())) {
+                            newTask.add(task);
+                        }
+                    }
+                    powerStation.setTasks(newTask);
+                })
+                .map(dateCalculator::subtractPowerLossFromPower)
+                .collect(Collectors.toMap(Converter::getId, Converter::getPower));
+        return collect;
     }
+
 }

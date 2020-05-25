@@ -42,4 +42,5 @@ public class TaskController {
     public Long getNumberOfEvents(@PathVariable Long id, @PathVariable String taskType) {
         return taskService.countEventsByIdPowerStation(id, taskType);
     }
+
 }

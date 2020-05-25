@@ -52,8 +52,8 @@ public class PowerStationController {
         return powerStationService.countEventsByIdPowerStation(id, taskType);
     }
 
-    @GetMapping("/{date}")
-    public Map<Integer, BigDecimal> getDateAndPower(@PathVariable String date) {
+    @GetMapping("/")
+    public Map<Long, BigDecimal> getDateAndPower(@RequestParam(value = "date") String date) {
         return powerStationService.getDateAndPower(date);
     }
 

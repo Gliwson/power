@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PowerStationRepository extends JpaRepository<PowerStation, Long> {
 
-    @Query("select distinct ps from PowerStation ps join fetch ps.tasks")
+    @Query("select distinct ps from PowerStation ps left join fetch ps.tasks")
     Collection<PowerStation> findAllOneSelect();
+
 }
