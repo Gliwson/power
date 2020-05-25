@@ -1,7 +1,5 @@
 package pl.power.services.impl;
 
-import ch.qos.logback.classic.pattern.DateConverter;
-import javafx.scene.effect.FloatMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Service;
 import pl.power.calculator.DateCalculator;
 import pl.power.domain.Converter;
 import pl.power.domain.entities.PowerStation;
-import pl.power.domain.entities.Task;
 import pl.power.domain.entities.enums.TaskType;
 import pl.power.domain.repositories.PowerStationRepository;
 import pl.power.dtos.PowerStationDTO;
@@ -19,9 +16,10 @@ import pl.power.services.errors.PowerStationsNotFoundException;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j

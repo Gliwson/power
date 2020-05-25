@@ -96,7 +96,6 @@ public class DefaultTaskService implements TaskService {
         task.setStartDate(createTaskDTO.getStartDate());
         task.setEndDate(createTaskDTO.getEndDate());
         Task save = taskRepository.save(task);
-        mapper.map(save,TaskDTO.class);
         return mapper.map(save,TaskDTO.class);
     }
 }
