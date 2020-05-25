@@ -98,20 +98,9 @@ public class DefaultPowerStationService implements PowerStationService {
     @Override
     public Map<Long, BigDecimal> getDateAndPower(String date) {
         DateCalculator dateCalculator = new DateCalculator(date);
-        Map<Long, BigDecimal> collect = powerStationRepository.findAllOneSelect().stream()
-                .peek(powerStation -> {
-                    Set<Task> newTask = new HashSet<>();
-                    Set<Task> tasks = powerStation.getTasks();
-                    for (Task task : tasks) {
-                        if (dateCalculator.checkYear(task.getStartDate().toLocalDateTime(), task.getEndDate().toLocalDateTime())) {
-                            newTask.add(task);
-                        }
-                    }
-                    powerStation.setTasks(newTask);
-                })
+        return powerStationRepository.findAllOneSelect().stream()
                 .map(dateCalculator::subtractPowerLossFromPower)
                 .collect(Collectors.toMap(Converter::getId, Converter::getPower));
-        return collect;
     }
 
 }

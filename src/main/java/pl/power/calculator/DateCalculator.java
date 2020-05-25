@@ -32,32 +32,25 @@ public class DateCalculator {
             LocalTime min = null;
             LocalTime max = null;
             BigDecimal hours = new BigDecimal(0);
-
             LocalDateTime start = t.getStartDate().toLocalDateTime();
-            int startDayOfYear = start.getDayOfYear();
-
             LocalDateTime end = t.getEndDate().toLocalDateTime();
-            int endDayOfYear = end.getDayOfYear();
-
-            int dateTimeDayOfYear = this.dateTime.getDayOfYear();
-
             LocalDate startDate = start.toLocalDate();
-            LocalDate endDate = start.toLocalDate();
+            LocalDate endDate = end.toLocalDate();
 
-
-            if (startDayOfYear <= dateTimeDayOfYear && endDayOfYear >= dateTimeDayOfYear) {
-                if (startDayOfYear < dateTimeDayOfYear) {
+            if (startDate.compareTo(dateTime) <= 0 && 0 <= endDate.compareTo(dateTime)) {
+                if (startDate.isBefore(dateTime)) {
                     min = LocalTime.MIN;
                 }
-                if (endDayOfYear > dateTimeDayOfYear) {
+                if (endDate.isAfter(dateTime)) {
                     max = LocalTime.MAX;
                 }
-                if (startDayOfYear == dateTimeDayOfYear) {
+                if (startDate.isEqual(dateTime)) {
                     min = LocalTime.of(start.getHour(), start.getMinute());
                 }
-                if (endDayOfYear == dateTimeDayOfYear) {
+                if (endDate.isEqual(dateTime)) {
                     max = LocalTime.of(end.getHour(), end.getMinute());
                 }
+
                 long second = max.toSecondOfDay() - min.toSecondOfDay();
 
                 BigDecimal time = new BigDecimal(second);
@@ -65,7 +58,7 @@ public class DateCalculator {
                 hours = time.divide(hour, 2, RoundingMode.HALF_UP);
             }
             BigDecimal result = converter.getPower().subtract(t.getPowerLoss().multiply(hours));
-            converter.setPower(result.setScale(2,RoundingMode.HALF_UP));
+            converter.setPower(result.setScale(2, RoundingMode.HALF_UP));
         }
         return converter;
     }
