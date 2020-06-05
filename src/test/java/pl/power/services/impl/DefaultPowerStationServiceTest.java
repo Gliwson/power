@@ -7,24 +7,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import pl.power.domain.entities.PowerStation;
-import pl.power.domain.entities.Task;
-import pl.power.domain.entities.enums.TaskType;
-import pl.power.domain.repositories.PowerStationRepository;
-import pl.power.dtos.PowerStationDTO;
-import pl.power.services.errors.IdIsNullException;
-import pl.power.services.errors.PowerStationsNotFoundException;
+import pl.power.domain.entity.PowerStation;
+import pl.power.domain.entity.Task;
+import pl.power.domain.entity.enums.TaskType;
+import pl.power.domain.repository.PowerStationRepository;
+import pl.power.services.exception.IdIsNullException;
+import pl.power.services.exception.NotFoundIDException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.any;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -45,8 +42,6 @@ class DefaultPowerStationServiceTest {
     private ModelMapper mapper;
 
     private PowerStation powerStation;
-
-    private PowerStationDTO powerStationDTO;
 
     @BeforeEach
     public void init() {
@@ -83,24 +78,6 @@ class DefaultPowerStationServiceTest {
         powerStation.add(task1);
         powerStation.add(task2);
         powerStation.add(task3);
-
-        powerStationDTO = new PowerStationDTO();
-        powerStationDTO.setId(1L);
-        powerStationDTO.setName("Lublin");
-        powerStationDTO.setPower(new BigDecimal(200));
-    }
-
-    @Test
-    void shouldFindPowerStationDtoById() {
-        //given
-        given(repository.findById(1L)).willReturn(Optional.of(powerStation));
-        given(mapper.map(powerStation, PowerStationDTO.class)).willReturn(powerStationDTO);
-        //when
-        PowerStationDTO result = service.findById(1L);
-        //then
-        then(repository).should().findById(1L);
-        assertThat(result.getName(), equalTo("Lublin"));
-        assertThat(result.getPower(), is(new BigDecimal(200)));
     }
 
     @Test
@@ -118,7 +95,7 @@ class DefaultPowerStationServiceTest {
         //given
         //when
         //then
-        assertThrows(PowerStationsNotFoundException.class, () -> service.findById(2L));
+        assertThrows(NotFoundIDException.class, () -> service.findById(2L));
         then(repository).should().findById(2L);
         then(mapper).should(never()).map(any(), any());
     }

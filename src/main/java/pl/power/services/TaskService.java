@@ -1,7 +1,7 @@
 package pl.power.services;
 
-import pl.power.dtos.CreateTaskDTO;
-import pl.power.dtos.TaskDTO;
+import pl.power.model.CreateTaskDTO;
+import pl.power.model.TaskDTO;
 
 import java.util.List;
 

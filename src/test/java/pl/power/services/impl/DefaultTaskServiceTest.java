@@ -8,14 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import pl.power.domain.entities.PowerStation;
-import pl.power.domain.entities.Task;
-import pl.power.domain.entities.enums.TaskType;
-import pl.power.domain.repositories.TaskRepository;
-import pl.power.dtos.CreateTaskDTO;
-import pl.power.dtos.TaskDTO;
-import pl.power.services.errors.IdIsNullException;
-import pl.power.services.errors.TaskNotFoundException;
+import pl.power.domain.entity.PowerStation;
+import pl.power.domain.entity.Task;
+import pl.power.domain.entity.enums.TaskType;
+import pl.power.domain.repository.TaskRepository;
+import pl.power.mapper.MapperInterface;
+import pl.power.model.CreateTaskDTO;
+import pl.power.model.TaskDTO;
+import pl.power.services.exception.IdIsNullException;
+import pl.power.services.exception.NotFoundIDException;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -48,6 +49,9 @@ class DefaultTaskServiceTest {
     private PowerStation powerStation;
     private TaskDTO taskDTO;
     private CreateTaskDTO createTaskDTO;
+
+    @Mock
+    private MapperInterface<Task, TaskDTO> mapperInterface;
 
     @BeforeEach
     public void init() {
@@ -82,7 +86,7 @@ class DefaultTaskServiceTest {
     void shouldFindTaskDtoById() {
         //given
         given(repository.findById(1L)).willReturn(Optional.of(task));
-        given(mapper.map(task, TaskDTO.class)).willReturn(taskDTO);
+        given(mapperInterface.toDTO(task)).willReturn(taskDTO);
         //when
         TaskDTO result = service.findById(1L);
         //then
@@ -106,7 +110,7 @@ class DefaultTaskServiceTest {
         //given
         //when
         //then
-        assertThrows(TaskNotFoundException.class, () -> service.findById(2L));
+        assertThrows(NotFoundIDException.class, () -> service.findById(2L));
         then(repository).should().findById(2L);
         then(mapper).should(never()).map(any(), any());
     }
@@ -127,13 +131,13 @@ class DefaultTaskServiceTest {
         //given
         given(repository.findById(1L)).willReturn(Optional.of(task));
         given(repository.save(task)).willReturn(task);
-        given(mapper.map(task, TaskDTO.class)).willReturn(taskDTO);
+        given(mapperInterface.toDTO(task)).willReturn(taskDTO);
         //when
         TaskDTO result = service.update(createTaskDTO);
         //then
         then(repository).should().findById(anyLong());
         then(repository).should().save(ArgumentMatchers.any());
-        then(mapper).should().map(ArgumentMatchers.any(), ArgumentMatchers.any());
+        then(mapperInterface).should().toDTO(ArgumentMatchers.any());
         assertThat(result.getPowerLoss(), is(taskDTO.getPowerLoss()));
     }
 }

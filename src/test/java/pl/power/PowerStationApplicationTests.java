@@ -8,6 +8,7 @@ class PowerStationApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }

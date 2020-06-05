@@ -1,11 +1,11 @@
 package pl.power.calculator;
 
+import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.power.domain.Converter;
-import pl.power.domain.entities.PowerStation;
-import pl.power.domain.entities.Task;
-import pl.power.domain.entities.enums.TaskType;
+import pl.power.domain.entity.PowerStation;
+import pl.power.domain.entity.Task;
+import pl.power.domain.entity.enums.TaskType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -60,9 +60,9 @@ class DateCalculatorTest {
         //given
         DateCalculator dateCalculator = new DateCalculator("2020-01-25");
         //when
-        Converter result = dateCalculator.subtractPowerLossFromPower(powerStation);
+        Pair<Long,BigDecimal> result = dateCalculator.subtractPowerLossFromPower(powerStation);
         //then
-        assertThat(result.getId(), is(1L));
+        assertThat(result.getKey(), is(1L));
 
     }
 
@@ -71,9 +71,9 @@ class DateCalculatorTest {
         //given
         DateCalculator dateCalculator = new DateCalculator("2020-06-26");
         //when
-        Converter result = dateCalculator.subtractPowerLossFromPower(powerStation);
+        Pair<Long,BigDecimal> result = dateCalculator.subtractPowerLossFromPower(powerStation);
         //then
-        assertThat(result.getPower(), is(new BigDecimal(200 * 24).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(result.getValue(), is(new BigDecimal(200 * 24).setScale(2, RoundingMode.HALF_UP)));
     }
 
     @Test
@@ -81,9 +81,9 @@ class DateCalculatorTest {
         //given
         DateCalculator dateCalculator = new DateCalculator("2020-01-25");
         //when
-        Converter result = dateCalculator.subtractPowerLossFromPower(powerStation);
+        Pair<Long,BigDecimal> result = dateCalculator.subtractPowerLossFromPower(powerStation);
         //then
-        assertThat(result.getPower(), is(new BigDecimal(0).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(result.getValue(), is(new BigDecimal(0).setScale(2, RoundingMode.HALF_UP)));
     }
 
     @Test
@@ -91,9 +91,9 @@ class DateCalculatorTest {
         //given
         DateCalculator dateCalculator = new DateCalculator("2019-12-31");
         //when
-        Converter result = dateCalculator.subtractPowerLossFromPower(powerStation);
+        Pair<Long,BigDecimal> result = dateCalculator.subtractPowerLossFromPower(powerStation);
         //then
-        assertThat(result.getPower(), is(new BigDecimal((200 * 24) - 100).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(result.getValue(), is(new BigDecimal((200 * 24) - 100).setScale(2, RoundingMode.HALF_UP)));
     }
 
     @Test
@@ -101,9 +101,9 @@ class DateCalculatorTest {
         //given
         DateCalculator dateCalculator = new DateCalculator("2018-01-20");
         //when
-        Converter result = dateCalculator.subtractPowerLossFromPower(powerStation);
+        Pair<Long,BigDecimal> result = dateCalculator.subtractPowerLossFromPower(powerStation);
         //then
-        assertThat(result.getPower(), is(new BigDecimal((200 * 24) - 100).setScale(2, RoundingMode.HALF_UP)));
+        assertThat(result.getValue(), is(new BigDecimal((200 * 24) - 100).setScale(2, RoundingMode.HALF_UP)));
     }
 
 }

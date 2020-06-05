@@ -1,76 +1,50 @@
 package pl.power.services.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import pl.power.domain.entities.PowerStation;
-import pl.power.domain.entities.Task;
-import pl.power.domain.entities.enums.TaskType;
-import pl.power.domain.repositories.PowerStationRepository;
-import pl.power.domain.repositories.TaskRepository;
-import pl.power.dtos.CreateTaskDTO;
-import pl.power.dtos.TaskDTO;
+import pl.power.domain.entity.PowerStation;
+import pl.power.domain.entity.Task;
+import pl.power.domain.entity.enums.TaskType;
+import pl.power.domain.repository.PowerStationRepository;
+import pl.power.domain.repository.TaskRepository;
+import pl.power.mapper.MapperInterface;
+import pl.power.model.CreateTaskDTO;
+import pl.power.model.TaskDTO;
 import pl.power.services.TaskService;
-import pl.power.services.errors.IdIsNullException;
-import pl.power.services.errors.PowerStationsNotFoundException;
-import pl.power.services.errors.TaskNotFoundException;
+import pl.power.services.exception.IdIsNullException;
+import pl.power.services.exception.PowerStationNotFoundException;
+import pl.power.services.exception.TaskNotFoundException;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@Slf4j
-@RequiredArgsConstructor
-public class DefaultTaskService implements TaskService {
+public class DefaultTaskService extends CrudAbstractService<Task,TaskDTO> implements TaskService {
 
     private final TaskRepository taskRepository;
     private final PowerStationRepository powerStationRepository;
-    private final ModelMapper mapper;
+    private final ModelMapper modelMapper;
+
+    public DefaultTaskService(JpaRepository<Task, Long> jpaRepository, MapperInterface<Task, TaskDTO> mapper,
+                              TaskRepository taskRepository, PowerStationRepository powerStationRepository,
+                              ModelMapper modelMapper) {
+        super(jpaRepository, mapper);
+        this.taskRepository = taskRepository;
+        this.powerStationRepository = powerStationRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     @Transactional
     public Long add(CreateTaskDTO createTaskDTO) {
-        Task task = mapper.map(createTaskDTO, Task.class);
+        Task task = modelMapper.map(createTaskDTO, Task.class);
         Optional<PowerStation> powerStationOptional = powerStationRepository.findById(task.getId());
-        PowerStation powerStation = powerStationOptional.orElseThrow(() -> new PowerStationsNotFoundException(task.getId()));
+        PowerStation powerStation = powerStationOptional.orElseThrow(() -> new PowerStationNotFoundException(task.getId()));
         task.setId(null);
         powerStation.add(task);
         powerStationRepository.save(powerStation);
         return taskRepository.findLastSaved();
-    }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        if (id == null) {
-            throw new IdIsNullException();
-        }
-        taskRepository.deleteById(id);
-    }
-
-    @Override
-    public List<TaskDTO> findAll() {
-        return taskRepository.findAllOneSelect()
-                .stream()
-                .map(task -> {
-                    TaskDTO map = mapper.map(task, TaskDTO.class);
-                    map.setNamePowerStation(task.getPowerStation().getName());
-                    return map;
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public TaskDTO findById(Long id) {
-        if (id == null) {
-            throw new IdIsNullException();
-        }
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
-        return mapper.map(task, TaskDTO.class);
     }
 
     @Override
@@ -96,6 +70,6 @@ public class DefaultTaskService implements TaskService {
         task.setStartDate(createTaskDTO.getStartDate());
         task.setEndDate(createTaskDTO.getEndDate());
         Task save = taskRepository.save(task);
-        return mapper.map(save,TaskDTO.class);
+        return mapper.toDTO(save);
     }
 }

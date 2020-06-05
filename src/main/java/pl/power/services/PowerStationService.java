@@ -1,14 +1,15 @@
 package pl.power.services;
 
-import pl.power.dtos.PowerStationDTO;
+import pl.power.model.PowerStationDTO;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 public interface PowerStationService {
 
-    Long add(PowerStationDTO powerStationDTO);
+    Long save(PowerStationDTO powerStationDTO);
 
     List<PowerStationDTO> findAll();
 
@@ -21,4 +22,7 @@ public interface PowerStationService {
     Long countEventsByIdPowerStation(Long id, String taskType);
 
     Map<Long, BigDecimal> getDateAndPower(String date);
+
+    @Transactional
+    void addAll();
 }
