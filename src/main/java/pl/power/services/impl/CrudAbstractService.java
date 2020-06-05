@@ -1,5 +1,7 @@
 package pl.power.services.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.power.domain.entity.EntityInterface;
@@ -19,9 +21,10 @@ public abstract class CrudAbstractService<E extends EntityInterface, D extends D
         this.mapper = mapper;
     }
 
-    public List<D> findAll() {
-        List<E> allEntities = jpaRepository.findAll();
-        return mapper.toDTOs(allEntities);
+    public List<D> findAll(Pageable pageable) {
+        Page<E> allEntities = jpaRepository.findAll(pageable);
+        List<E> content = allEntities.getContent();
+        return mapper.toDTOs(content);
     }
 
     public D findById(Long id) {

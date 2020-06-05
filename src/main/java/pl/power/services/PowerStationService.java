@@ -1,5 +1,6 @@
 package pl.power.services;
 
+import org.springframework.data.domain.Pageable;
 import pl.power.model.PowerStationDTO;
 
 import javax.transaction.Transactional;
@@ -11,7 +12,7 @@ public interface PowerStationService {
 
     Long save(PowerStationDTO powerStationDTO);
 
-    List<PowerStationDTO> findAll();
+    List<PowerStationDTO> findAll(Pageable pageable);
 
     PowerStationDTO findById(Long id);
 

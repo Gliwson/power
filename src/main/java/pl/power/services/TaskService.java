@@ -1,5 +1,6 @@
 package pl.power.services;
 
+import org.springframework.data.domain.Pageable;
 import pl.power.model.CreateTaskDTO;
 import pl.power.model.TaskDTO;
 
@@ -11,7 +12,7 @@ public interface TaskService {
 
     void delete(Long id);
 
-    List<TaskDTO> findAll();
+    List<TaskDTO> findAll(Pageable pageable);
 
     TaskDTO findById(Long id);
 

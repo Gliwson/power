@@ -1,5 +1,6 @@
 package pl.power.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.power.model.CreateTaskDTO;
@@ -20,8 +21,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDTO> getTasks() {
-        return taskService.findAll();
+    public List<TaskDTO> getTasks(Pageable pageable) {
+        return taskService.findAll(pageable);
     }
 
     @GetMapping("/{id}")

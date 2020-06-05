@@ -1,5 +1,6 @@
 package pl.power.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.power.model.PowerStationDTO;
@@ -21,8 +22,8 @@ public class PowerStationController {
     }
 
     @GetMapping
-    public List<PowerStationDTO> getPowerStations() {
-        return powerStationService.findAll();
+    public List<PowerStationDTO> getPowerStations(Pageable pageable) {
+        return powerStationService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
