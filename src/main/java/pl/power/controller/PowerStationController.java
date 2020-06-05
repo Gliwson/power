@@ -58,9 +58,9 @@ public class PowerStationController {
     }
 
     @GetMapping("/addAll")
-    public String addAll() {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public void addAll() {
         powerStationService.addAll();
-        return "DONE";
     }
 
 }
