@@ -43,7 +43,7 @@ public class PowerStationController {
         powerStationService.delete(id);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public PowerStationDTO updatePowerStation(@PathVariable Long id, @Valid @RequestBody PowerStationDTO powerStationDTO) {
         return powerStationService.update(id, powerStationDTO);
     }

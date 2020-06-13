@@ -50,12 +50,11 @@ public class DefaultPowerStationService extends CrudAbstractService<PowerStation
             throw new IdIsNullException();
         }
         powerStationDTO.setId(id);
-        powerStationRepository.findById(id)
+        PowerStation station = powerStationRepository.findById(id)
                 .orElseThrow(() -> new PowerStationNotFoundException(id));
-        PowerStation map = mapper.toEntity(powerStationDTO);
-        map.setId(id);
-        powerStationRepository.save(map);
-        return mapper.toDTO(map);
+        station.setName(powerStationDTO.getName());
+        station.setPower(powerStationDTO.getPower());
+        return powerStationDTO;
     }
 
     @Override
@@ -104,7 +103,6 @@ public class DefaultPowerStationService extends CrudAbstractService<PowerStation
                             task.setEndDate(event.getEventStop());
                             task.setTaskType(TaskType.AWARIA);
                             powerStation1.add(task);
-                            powerStationRepository.save(powerStation1);
                         });
             }
 

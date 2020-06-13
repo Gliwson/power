@@ -22,7 +22,7 @@ public class Task implements Serializable, EntityInterface {
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+            CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_power_station")
     private PowerStation powerStation;
 

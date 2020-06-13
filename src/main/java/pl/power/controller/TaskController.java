@@ -42,7 +42,7 @@ public class TaskController {
         taskService.delete(id);
     }
 
-    @PutMapping("/")
+    @PatchMapping("/")
     public TaskDTO updateTask(@Valid @RequestBody CreateTaskDTO createTaskDTO) {
         return taskService.update(createTaskDTO);
     }

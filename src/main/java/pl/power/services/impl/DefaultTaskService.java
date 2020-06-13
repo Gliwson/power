@@ -1,6 +1,7 @@
 package pl.power.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.power.domain.entity.PowerStation;
@@ -17,10 +18,12 @@ import pl.power.services.exception.PowerStationNotFoundException;
 import pl.power.services.exception.TaskNotFoundException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class DefaultTaskService extends CrudAbstractService<Task,TaskDTO> implements TaskService {
+public class DefaultTaskService extends CrudAbstractService<Task, TaskDTO> implements TaskService {
 
     private final TaskRepository taskRepository;
     private final PowerStationRepository powerStationRepository;
@@ -63,13 +66,21 @@ public class DefaultTaskService extends CrudAbstractService<Task,TaskDTO> implem
     @Override
     @Transactional
     public TaskDTO update(CreateTaskDTO createTaskDTO) {
-        Optional<Task> byId = taskRepository.findById(createTaskDTO.getId());
-        Task task = byId.orElseThrow(() -> new TaskNotFoundException(createTaskDTO.getId()));
+        Task task = taskRepository.findById(createTaskDTO.getId()).orElseThrow(() -> new TaskNotFoundException(createTaskDTO.getId()));
         task.setPowerLoss(createTaskDTO.getPowerLoss());
         task.setTaskType(createTaskDTO.getTaskType());
         task.setStartDate(createTaskDTO.getStartDate());
         task.setEndDate(createTaskDTO.getEndDate());
-        Task save = taskRepository.save(task);
-        return mapper.toDTO(save);
+        return mapper.toDTO(task);
+    }
+
+    @Override
+    public List<TaskDTO> findAll(Pageable pageable) {
+        List<Task> all = taskRepository.findAll(pageable).toList();
+        List<Long> longList = all.stream()
+                .map(value -> value.getPowerStation().getId())
+                .collect(Collectors.toList());
+        powerStationRepository.findAllById(longList);
+        return mapper.toDTOs(all);
     }
 }
